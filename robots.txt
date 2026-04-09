@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://home-of-comfort.vercel.app/sitemap.xml
