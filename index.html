@@ -1,1246 +1,602 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home of Comfort by Mark Ltd. — Upholstery & Furniture Repair</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
- 
-    :root {
-      --cream: #f5f0e8;
-      --warm-white: #fdfaf4;
-      --caramel: #c8924a;
-      --deep-brown: #2c1a0e;
-      --mid-brown: #5c3d22;
-      --sand: #e0c99b;
-      --linen: #e8dfc8;
-      --accent: #a0652a;
-      --text: #3a2515;
-      --muted: #7a6248;
-    }
- 
-    html { scroll-behavior: smooth; }
- 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--warm-white);
-      color: var(--text);
-      overflow-x: hidden;
-    }
- 
-    /* ── NOISE TEXTURE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.5;
-    }
- 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.4rem 5%;
-      background: rgba(253, 250, 244, 0.88);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(200, 146, 74, 0.18);
-      transition: all 0.3s ease;
-    }
- 
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      color: var(--deep-brown);
-      letter-spacing: 0.01em;
-      line-height: 1.2;
-    }
- 
-    .nav-logo span {
-      display: block;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.6rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--caramel);
-      margin-top: 2px;
-    }
- 
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
- 
-    .nav-links a {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--mid-brown);
-      text-decoration: none;
-      position: relative;
-      transition: color 0.2s;
-    }
- 
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 0; height: 1px;
-      background: var(--caramel);
-      transition: width 0.3s ease;
-    }
- 
-    .nav-links a:hover { color: var(--caramel); }
-    .nav-links a:hover::after { width: 100%; }
- 
-    .nav-cta {
-      background: var(--deep-brown);
-      color: var(--cream) !important;
-      padding: 0.55rem 1.4rem;
-      border-radius: 2px;
-    }
-    .nav-cta::after { display: none !important; }
-    .nav-cta:hover { background: var(--accent) !important; color: white !important; }
- 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding-top: 80px;
-      position: relative;
-      overflow: hidden;
-    }
- 
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 6rem 5% 6rem 8%;
-      position: relative;
-      z-index: 2;
-    }
- 
-    .hero-eyebrow {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--caramel);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
- 
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 5vw, 4.8rem);
-      font-weight: 700;
-      line-height: 1.08;
-      color: var(--deep-brown);
-      margin-bottom: 1.8rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
- 
-    .hero-title em {
-      font-style: italic;
-      color: var(--caramel);
-    }
- 
-    .hero-desc {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--muted);
-      max-width: 420px;
-      margin-bottom: 2.8rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
-    }
- 
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
-    }
- 
-    .btn-primary {
-      background: var(--deep-brown);
-      color: var(--cream);
-      padding: 0.9rem 2.2rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: all 0.25s ease;
-      border: 2px solid var(--deep-brown);
-    }
-    .btn-primary:hover {
-      background: var(--caramel);
-      border-color: var(--caramel);
-    }
- 
-    .btn-outline {
-      background: transparent;
-      color: var(--deep-brown);
-      padding: 0.9rem 2.2rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
-      border: 2px solid var(--deep-brown);
-      transition: all 0.25s ease;
-    }
-    .btn-outline:hover {
-      background: var(--deep-brown);
-      color: var(--cream);
-    }
- 
-    .hero-right {
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
- 
-    .hero-visual {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse at 60% 40%, rgba(200,146,74,0.22) 0%, transparent 65%),
-        linear-gradient(135deg, #e8dfc8 0%, #c8924a22 50%, #f5f0e8 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
- 
-    .hero-chair-art {
-      width: 380px;
-      height: 420px;
-      opacity: 0;
-      animation: fadeIn 1.2s 0.9s forwards;
-    }
- 
-    .hero-badge {
-      position: absolute;
-      bottom: 2.5rem;
-      right: 2.5rem;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: var(--deep-brown);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--cream);
-      font-family: 'Playfair Display', serif;
-      font-size: 0.7rem;
-      text-align: center;
-      line-height: 1.4;
-      letter-spacing: 0.05em;
-      animation: spin 20s linear infinite;
-      box-shadow: 0 8px 32px rgba(44,26,14,0.25);
-    }
- 
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
- 
-    .hero-badge-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: spin 20s linear infinite reverse;
-    }
- 
-    /* ── STATS STRIP ── */
-    .stats-strip {
-      background: var(--deep-brown);
-      color: var(--cream);
-      padding: 2.5rem 8%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
- 
-    .stat-item {
-      text-align: center;
-    }
- 
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: var(--caramel);
-      line-height: 1;
-    }
- 
-    .stat-label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--sand);
-      margin-top: 0.4rem;
-    }
- 
-    .stat-divider {
-      width: 1px;
-      height: 50px;
-      background: rgba(200,146,74,0.3);
-    }
- 
-    /* ── SECTION COMMON ── */
-    section { padding: 7rem 8%; }
- 
-    .section-eyebrow {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--caramel);
-      margin-bottom: 1rem;
-    }
- 
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 700;
-      color: var(--deep-brown);
-      line-height: 1.15;
-      margin-bottom: 1.2rem;
-    }
- 
-    .section-subtitle {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 520px;
-    }
- 
-    /* ── SERVICES ── */
-    #services {
-      background: var(--cream);
-      position: relative;
-      overflow: hidden;
-    }
- 
-    #services::before {
-      content: 'CRAFT';
-      position: absolute;
-      top: -1rem;
-      right: -2rem;
-      font-family: 'Playfair Display', serif;
-      font-size: 12rem;
-      font-weight: 700;
-      color: rgba(200,146,74,0.06);
-      pointer-events: none;
-      line-height: 1;
-      white-space: nowrap;
-    }
- 
-    .services-header {
-      margin-bottom: 4rem;
-    }
- 
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
- 
-    .service-card {
-      background: var(--warm-white);
-      border: 1px solid rgba(200,146,74,0.15);
-      padding: 2.5rem 2rem;
-      border-radius: 4px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.35s ease;
-      cursor: default;
-    }
- 
-    .service-card::before {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 3px;
-      height: 0;
-      background: var(--caramel);
-      transition: height 0.35s ease;
-    }
- 
-    .service-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 50px rgba(44,26,14,0.1);
-      border-color: rgba(200,146,74,0.4);
-    }
- 
-    .service-card:hover::before { height: 100%; }
- 
-    .service-icon {
-      width: 52px;
-      height: 52px;
-      margin-bottom: 1.5rem;
-      color: var(--caramel);
-    }
- 
-    .service-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--deep-brown);
-      margin-bottom: 0.8rem;
-    }
- 
-    .service-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
- 
-    .service-tag {
-      display: inline-block;
-      margin-top: 1.2rem;
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--caramel);
-      border-top: 1px solid rgba(200,146,74,0.3);
-      padding-top: 0.8rem;
-      width: 100%;
-    }
- 
-    /* ── WHY US ── */
-    #about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-    }
- 
-    .about-visual {
-      position: relative;
-    }
- 
-    .about-img-frame {
-      width: 100%;
-      aspect-ratio: 4/5;
-      background: linear-gradient(145deg, var(--linen), var(--sand));
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
- 
-    .about-img-frame svg {
-      width: 75%;
-      height: 75%;
-      opacity: 0.6;
-    }
- 
-    .about-accent-box {
-      position: absolute;
-      bottom: -2rem;
-      right: -2rem;
-      width: 160px;
-      background: var(--caramel);
-      color: white;
-      padding: 1.8rem 1.5rem;
-      border-radius: 4px;
-      text-align: center;
-    }
- 
-    .about-accent-box .big-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      line-height: 1;
-    }
- 
-    .about-accent-box .small-text {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.9;
-      margin-top: 0.5rem;
-    }
- 
-    .about-content { }
- 
-    .about-features {
-      margin-top: 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.4rem;
-    }
- 
-    .about-feature {
-      display: flex;
-      gap: 1.2rem;
-      align-items: flex-start;
-    }
- 
-    .feature-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--caramel);
-      margin-top: 0.4rem;
-      flex-shrink: 0;
-    }
- 
-    .feature-text strong {
-      display: block;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: var(--deep-brown);
-      margin-bottom: 0.2rem;
-    }
- 
-    .feature-text p {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.6;
-    }
- 
-    /* ── PROCESS ── */
-    #process {
-      background: var(--deep-brown);
-      color: var(--cream);
-    }
- 
-    #process .section-title { color: var(--cream); }
-    #process .section-subtitle { color: var(--sand); }
- 
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 2rem;
-      margin-top: 4rem;
-      position: relative;
-    }
- 
-    .process-steps::before {
-      content: '';
-      position: absolute;
-      top: 32px;
-      left: 12.5%;
-      right: 12.5%;
-      height: 1px;
-      background: rgba(200,146,74,0.3);
-    }
- 
-    .process-step {
-      text-align: center;
-      position: relative;
-    }
- 
-    .step-num {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: rgba(200,146,74,0.15);
-      border: 1px solid rgba(200,146,74,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.5rem;
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--caramel);
-      position: relative;
-      z-index: 1;
-      background: var(--deep-brown);
-    }
- 
-    .step-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--cream);
-      margin-bottom: 0.6rem;
-    }
- 
-    .step-desc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      color: var(--sand);
-      line-height: 1.65;
-    }
- 
-    /* ── TESTIMONIALS ── */
-    #testimonials {
-      background: var(--linen);
-    }
- 
-    .testimonials-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
- 
-    .testimonials-header .section-subtitle {
-      margin: 0 auto;
-    }
- 
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
- 
-    .testimonial-card {
-      background: var(--warm-white);
-      padding: 2.2rem;
-      border-radius: 4px;
-      border: 1px solid rgba(200,146,74,0.12);
-      position: relative;
-    }
- 
-    .testimonial-card::before {
-      content: '"';
-      font-family: 'Playfair Display', serif;
-      font-size: 6rem;
-      color: rgba(200,146,74,0.15);
-      position: absolute;
-      top: -0.5rem;
-      left: 1.5rem;
-      line-height: 1;
-    }
- 
-    .testimonial-stars {
-      display: flex;
-      gap: 3px;
-      margin-bottom: 1rem;
-    }
- 
-    .star { color: var(--caramel); font-size: 0.9rem; }
- 
-    .testimonial-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.05rem;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--text);
-      line-height: 1.7;
-      margin-bottom: 1.5rem;
-    }
- 
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-    }
- 
-    .author-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--caramel), var(--mid-brown));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      color: white;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
- 
-    .author-name {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--deep-brown);
-    }
- 
-    .author-loc {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
- 
-    /* ── CTA ── */
-    #contact {
-      background: linear-gradient(135deg, var(--mid-brown) 0%, var(--deep-brown) 100%);
-      color: var(--cream);
-      text-align: center;
-      padding: 7rem 8%;
-      position: relative;
-      overflow: hidden;
-    }
- 
-    #contact::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 50%, rgba(200,146,74,0.2) 0%, transparent 70%);
-      pointer-events: none;
-    }
- 
-    #contact .section-title {
-      color: var(--cream);
-      max-width: 600px;
-      margin: 0 auto 1.2rem;
-    }
- 
-    #contact .section-subtitle {
-      color: var(--sand);
-      margin: 0 auto 3rem;
-      text-align: center;
-    }
- 
-    .contact-form {
-      display: flex;
-      gap: 1rem;
-      max-width: 520px;
-      margin: 0 auto 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
- 
-    .contact-form input,
-    .contact-form select {
-      flex: 1;
-      min-width: 200px;
-      padding: 0.9rem 1.3rem;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(200,146,74,0.4);
-      border-radius: 2px;
-      color: var(--cream);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      outline: none;
-      transition: border-color 0.25s;
-    }
- 
-    .contact-form input::placeholder { color: rgba(255,255,255,0.45); }
- 
-    .contact-form input:focus,
-    .contact-form select:focus {
-      border-color: var(--caramel);
-    }
- 
-    .contact-form select option { background: var(--deep-brown); color: var(--cream); }
- 
-    .contact-btn {
-      background: var(--caramel);
-      color: white;
-      padding: 0.9rem 2.5rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
- 
-    .contact-btn:hover { background: var(--accent); transform: translateY(-1px); }
- 
-    /* ── MESSENGER CTA ── */
-    .messenger-cta-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin: 2rem 0 1rem;
-    }
- 
-    .messenger-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: linear-gradient(135deg, #0099ff 0%, #a259ff 100%);
-      color: white;
-      padding: 1rem 2.6rem;
-      border-radius: 50px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
-      font-weight: 500;
-      letter-spacing: 0.03em;
-      text-decoration: none;
-      box-shadow: 0 8px 30px rgba(0,153,255,0.35);
-      transition: all 0.3s ease;
-    }
- 
-    .messenger-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 40px rgba(0,153,255,0.5);
-      filter: brightness(1.08);
-    }
- 
-    .messenger-icon {
-      width: 26px;
-      height: 26px;
-      flex-shrink: 0;
-    }
- 
-    .messenger-sub {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.8rem;
-      color: var(--sand);
-      opacity: 0.8;
-      letter-spacing: 0.03em;
-    }
- 
-    .contact-info-row {
-      display: flex;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-      margin-top: 3rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid rgba(200,146,74,0.2);
-    }
- 
-    .contact-info-item {
-      text-align: center;
-    }
- 
-    .contact-info-item .label {
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--sand);
-      margin-bottom: 0.4rem;
-    }
- 
-    .contact-info-item .value {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      color: var(--cream);
-    }
- 
-    /* ── FOOTER ── */
-    footer {
-      background: #1a0f07;
-      color: var(--muted);
-      padding: 2.5rem 8%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
- 
-    footer .footer-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      color: var(--sand);
-    }
- 
-    footer p {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
- 
-    .footer-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
- 
-    .footer-links a {
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
- 
-    .footer-links a:hover { color: var(--caramel); }
- 
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
- 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
- 
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
- 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
- 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-right { min-height: 300px; }
-      .services-grid { grid-template-columns: 1fr 1fr; }
-      #about { grid-template-columns: 1fr; gap: 3rem; }
-      .process-steps { grid-template-columns: 1fr 1fr; }
-      .process-steps::before { display: none; }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .stat-divider { display: none; }
-      nav { padding: 1rem 5%; }
-      .nav-links { gap: 1.4rem; }
-    }
- 
-    @media (max-width: 600px) {
-      .services-grid { grid-template-columns: 1fr; }
-      .process-steps { grid-template-columns: 1fr; }
-      .hero-left { padding: 4rem 6% 4rem 6%; }
-      section { padding: 5rem 6%; }
-      .nav-links { display: none; }
-    }
-  </style>
-</head>
-<body>
- 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      Home of Comfort
-      <span>by Mark Ltd. — Est. 2026</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#process">Our Process</a></li>
-      <li><a href="#testimonials">Reviews</a></li>
-      <li><a href="https://www.facebook.com/homeofcomfortsupholstery" target="_blank" rel="noopener" class="nav-cta">💬 Message Us</a></li>
-    </ul>
-  </nav>
- 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <p class="hero-eyebrow">General Upholstery & Furniture Repair</p>
-      <h1 class="hero-title">
-        Restore the <em>Soul</em><br>of Every Piece
-      </h1>
-      <p class="hero-desc">
-        From heirloom armchairs to contemporary sofas — we bring your beloved furniture back to life with master craftsmanship and the finest materials.
-      </p>
-      <div class="hero-buttons">
-        <a href="https://www.facebook.com/homeofcomfortsupholstery" target="_blank" rel="noopener" class="btn-primary">💬 Message Us on Facebook</a>
-        <a href="#services" class="btn-outline">Our Services</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home of Comfort by Mark Ltd. — Upholstery & Furniture Repair</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">
+        Home of Comfort
+        <span>by Mark Ltd. — Est. 2026</span>
       </div>
-    </div>
- 
-    <div class="hero-right">
-      <div class="hero-visual">
-        <img src="public/images/sofa.jpg" style="width:100%;height:100%;object-fit:cover;object-position:50% 40%;" alt="Upholstered Sofa" class="hero-chair" />
-      </div>
-      <div class="hero-badge">
-        <div class="hero-badge-inner">
-          <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.05em;">20+ YRS</span>
-          <span style="font-size:0.6rem;letter-spacing:0.08em;margin-top:3px;opacity:0.8;">OF EXPERT<br>CRAFTSMANSHIP</span>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li>
+          <a
+            href="https://www.facebook.com/homeofcomfortsupholstery"
+            target="_blank"
+            rel="noopener"
+            class="nav-cta"
+            >💬 Message Us</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <p class="hero-eyebrow">General Upholstery & Furniture Repair</p>
+        <h1 class="hero-title">
+          Restore the <em>Soul</em><br />of Every Piece
+        </h1>
+        <p class="hero-desc">
+          From heirloom armchairs to contemporary sofas — we bring your beloved
+          furniture back to life with master craftsmanship and the finest
+          materials.
+        </p>
+        <div class="hero-buttons">
+          <a
+            href="https://www.facebook.com/homeofcomfortsupholstery"
+            target="_blank"
+            rel="noopener"
+            class="btn-primary"
+            >💬 Message Us on Facebook</a
+          >
+          <a href="#services" class="btn-outline">Our Services</a>
         </div>
       </div>
-    </div>
-  </section>
- 
-  <!-- SERVICES -->
-  <section id="services">
-    <div class="services-header reveal">
-      <p class="section-eyebrow">What We Do</p>
-      <h2 class="section-title">Craftsmanship for<br>Every Piece of Furniture</h2>
-      <p class="section-subtitle">Whether it's a single dining chair or a complete living room set, we deliver meticulous attention and lasting quality.</p>
-    </div>
- 
-    <div class="services-grid">
- 
-      <div class="service-card reveal">
-        <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="18" width="40" height="26" rx="5" stroke="currentColor" stroke-width="2"/>
-          <path d="M14 18V14a12 12 0 0 1 24 0v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="26" cy="31" r="4" stroke="currentColor" stroke-width="2"/>
-        </svg>
-        <h3 class="service-name">Sofa & Couch Reupholstering</h3>
-        <p class="service-desc">Complete fabric replacement, foam refilling, spring repair, and structural strengthening for all sofa types and sizes.</p>
-        <span class="service-tag">Full Restoration Available</span>
-      </div>
- 
-      <div class="service-card reveal" style="transition-delay:0.1s">
-        <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 38V20a6 6 0 0 1 6-6h20a6 6 0 0 1 6 6v18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <rect x="6" y="36" width="40" height="8" rx="3" stroke="currentColor" stroke-width="2"/>
-          <line x1="18" y1="14" x2="18" y2="36" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <line x1="34" y1="14" x2="34" y2="36" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-        </svg>
-        <h3 class="service-name">Chair & Armchair Upholstery</h3>
-        <p class="service-desc">Dining chairs, accent chairs, wingbacks, recliners — we restore comfort and beauty to every seating piece in your home.</p>
-        <span class="service-tag">Custom Fabric Selection</span>
-      </div>
- 
-      <div class="service-card reveal" style="transition-delay:0.2s">
-        <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="8" width="40" height="28" rx="4" stroke="currentColor" stroke-width="2"/>
-          <rect x="14" y="36" width="24" height="8" rx="3" stroke="currentColor" stroke-width="2"/>
-          <line x1="6" y1="22" x2="46" y2="22" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-          <line x1="26" y1="8" x2="26" y2="36" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
-        </svg>
-        <h3 class="service-name">Headboard & Bed Frame Work</h3>
-        <p class="service-desc">Upholster or re-upholster headboards and bed frames with premium padded finishes, creating a luxurious bedroom focal point.</p>
-        <span class="service-tag">Tufted & Flat Options</span>
-      </div>
- 
-      <div class="service-card reveal" style="transition-delay:0.1s">
-        <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 40 L8 22 Q8 16 14 16 L38 16 Q44 16 44 22 L44 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M4 40 L48 40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M16 28 Q26 24 36 28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-        </svg>
-        <h3 class="service-name">Foam & Cushion Replacement</h3>
-        <p class="service-desc">Sagging or flattened cushions? We replace worn foam with high-density, long-lasting alternatives for renewed sit comfort.</p>
-        <span class="service-tag">High-Density & Memory Foam</span>
-      </div>
- 
-      <div class="service-card reveal" style="transition-delay:0.2s">
-        <svg class="service-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="26" cy="24" r="16" stroke="currentColor" stroke-width="2"/>
-          <path d="M20 24 l4 4 l8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10 40 Q26 48 42 40" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-        </svg>
-        <h3 class="service-name">Structural Frame Repair</h3>
-        <p class="service-desc">Broken frames, loose joints, wobbly legs — we fix the bones of your furniture before any reupholstering begins, ensuring lasting results.</p>
-        <span class="service-tag">Joinery & Woodwork</span>
-      </div>
-    </div>
-  </section>
- 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-visual reveal">
-      <div class="about-img-frame">
-        <img src="public/images/sofa2.jpg" alt="" style="width: 100%; object-fit: fill;">
-      </div>
-      <div class="about-accent-box">
-        <div class="big-num">20+</div>
-        <div class="small-text">Years of Trusted Service</div>
-      </div>
-    </div>
- 
-    <div class="about-content reveal">
-      <p class="section-eyebrow">Why Choose Us</p>
-      <h2 class="section-title">Mark's Legacy of <em style="font-style:italic;color:var(--caramel)">Comfort</em></h2>
-      <p class="section-subtitle">Home of Comfort by Mark Ltd. was founded on a simple belief: every piece of furniture has a story worth preserving. For over two decades, we've been the trusted choice for homeowners, interior designers, and businesses across the region.</p>
- 
-      <div class="about-features">
-        <div class="about-feature">
-          <div class="feature-dot"></div>
-          <div class="feature-text">
-            <strong>Master Craftsmen Only</strong>
-            <p>Every project is handled by experienced upholsterers trained in both traditional and modern techniques.</p>
-          </div>
+
+      <div class="hero-right">
+        <div class="hero-visual">
+          <img
+            src="assets/images/sofa.jpg"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: 50% 40%;
+            "
+            alt="Upholstered Sofa"
+            class="hero-chair"
+          />
         </div>
-        <div class="about-feature">
-          <div class="feature-dot"></div>
-          <div class="feature-text">
-            <strong>Premium Materials Guaranteed</strong>
-            <p>We source only quality fabrics, leathers, and foams — offering 50+ options to match any style and budget.</p>
-          </div>
-        </div>
-        <div class="about-feature">
-          <div class="feature-dot"></div>
-          <div class="feature-text">
-            <strong>Transparent Pricing & Timelines</strong>
-            <p>No hidden costs, no surprises. We provide clear estimates and realistic completion schedules upfront.</p>
-          </div>
-        </div>
-        <div class="about-feature">
-          <div class="feature-dot"></div>
-          <div class="feature-text">
-            <strong>Pickup & Delivery Available</strong>
-            <p>We offer convenient collection and return service so restoring your furniture is hassle-free.</p>
+        <div class="hero-badge">
+          <div class="hero-badge-inner">
+            <span
+              style="
+                font-size: 0.75rem;
+                font-weight: 700;
+                letter-spacing: 0.05em;
+              "
+              >20+ YRS</span
+            >
+            <span
+              style="
+                font-size: 0.6rem;
+                letter-spacing: 0.08em;
+                margin-top: 3px;
+                opacity: 0.8;
+              "
+              >OF EXPERT<br />CRAFTSMANSHIP</span
+            >
           </div>
         </div>
       </div>
-    </div>
-  </section>
- 
-  <!-- PROCESS -->
-  <section id="process">
-    <div class="reveal" style="text-align:center;max-width:620px;margin:0 auto;">
-      <p class="section-eyebrow">How It Works</p>
-      <h2 class="section-title">From Worn to<br><em style="font-style:italic;color:var(--caramel)">Wonderful</em></h2>
-      <p class="section-subtitle">Our streamlined process makes restoring your furniture simple, transparent, and stress-free from start to finish.</p>
-    </div>
- 
-    <div class="process-steps">
-      <div class="process-step reveal">
-        <div class="step-num">1</div>
-        <h3 class="step-title">Free Consultation</h3>
-        <p class="step-desc">Share photos or bring your piece in. We assess the condition and discuss your vision, style, and budget.</p>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div class="services-header reveal">
+        <p class="section-eyebrow">What We Do</p>
+        <h2 class="section-title">
+          Craftsmanship for<br />Every Piece of Furniture
+        </h2>
+        <p class="section-subtitle">
+          Whether it's a single dining chair or a complete living room set, we
+          deliver meticulous attention and lasting quality.
+        </p>
       </div>
-      <div class="process-step reveal" style="transition-delay:0.1s">
-        <div class="step-num">2</div>
-        <h3 class="step-title">Fabric Selection</h3>
-        <p class="step-desc">Choose from our curated collection of fabrics, leathers, and materials with guidance from our experts.</p>
-      </div>
-      <div class="process-step reveal" style="transition-delay:0.2s">
-        <div class="step-num">3</div>
-        <h3 class="step-title">Expert Restoration</h3>
-        <p class="step-desc">Our craftsmen get to work — repairing frames, replacing foam, and reupholstering with precision stitching.</p>
-      </div>
-      <div class="process-step reveal" style="transition-delay:0.3s">
-        <div class="step-num">4</div>
-        <h3 class="step-title">Delivery & Enjoy</h3>
-        <p class="step-desc">Your revived furniture is returned to you on time, complete with a quality guarantee and care guide.</p>
-      </div>
-    </div>
-  </section>
- 
-  <!-- TESTIMONIALS -->
-  <section id="testimonials">
-    <div class="testimonials-header reveal">
-      <p class="section-eyebrow">Client Stories</p>
-      <h2 class="section-title">What Our Customers Say</h2>
-      <p class="section-subtitle">Don't take our word for it — here's what families and businesses say about their experience with us.</p>
-    </div>
- 
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <p class="testimonial-text">I would highly recommend Mark for any furniture design/repairs. I wanted to replace the covers for my dining chairs-he was very professional, punctual & completed the work to a very high standard.
-He also suggested the best materials & fabrics, ensuring great quality while keeping within budget</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">N</div>
-          <div>
-            <div class="author-name">Noah Abraham</div>
-            <div class="author-loc">London, United Kingdom</div>
-          </div>
-        </div>
-      </div>
- 
-      <div class="testimonial-card reveal" style="transition-delay:0.1s">
-        <p class="testimonial-text">excellent and quality work</p>
-        <div class="testimonial-author">
-          <div class="author-avatar">J</div>
-          <div>
-            <div class="author-name">Jo An Na</div>
-            <div class="author-loc">London, United Kingdom</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
- 
-  <!-- CTA / CONTACT -->
-  <section id="contact">
-    <div class="reveal">
-      <p class="section-eyebrow" style="color:var(--sand);">Get Started Today</p>
-      <h2 class="section-title">Ready to Restore<br>Your Furniture?</h2>
-      <p class="section-subtitle">Chat with us directly on Facebook Messenger — describe your piece, send a photo, and we'll get back to you fast with a free quote.</p>
- 
-      <div class="messenger-cta-wrap">
-        <a href="https://www.facebook.com/homeofcomfortsupholstery" target="_blank" rel="noopener" class="messenger-btn">
-          <svg class="messenger-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.477 2 2 6.145 2 11.243c0 2.91 1.395 5.512 3.58 7.237V22l3.27-1.795A10.9 10.9 0 0 0 12 20.486c5.523 0 10-4.145 10-9.243S17.523 2 12 2Zm1.008 12.44-2.548-2.713-4.97 2.713 5.473-5.81 2.61 2.713 4.908-2.713-5.473 5.81Z"/>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <svg
+            class="service-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="6"
+              y="18"
+              width="40"
+              height="26"
+              rx="5"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M14 18V14a12 12 0 0 1 24 0v4"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <circle
+              cx="26"
+              cy="31"
+              r="4"
+              stroke="currentColor"
+              stroke-width="2"
+            />
           </svg>
-          Message Us on Facebook Messenger
-        </a>
-        <p class="messenger-sub">We typically reply within a few hours · Mon – Sat, 8am – 6pm</p>
+          <h3 class="service-name">Sofa & Couch Reupholstering</h3>
+          <p class="service-desc">
+            Complete fabric replacement, foam refilling, spring repair, and
+            structural strengthening for all sofa types and sizes.
+          </p>
+          <span class="service-tag">Full Restoration Available</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.1s">
+          <svg
+            class="service-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 38V20a6 6 0 0 1 6-6h20a6 6 0 0 1 6 6v18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <rect
+              x="6"
+              y="36"
+              width="40"
+              height="8"
+              rx="3"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <line
+              x1="18"
+              y1="14"
+              x2="18"
+              y2="36"
+              stroke="currentColor"
+              stroke-width="1.5"
+              opacity="0.5"
+            />
+            <line
+              x1="34"
+              y1="14"
+              x2="34"
+              y2="36"
+              stroke="currentColor"
+              stroke-width="1.5"
+              opacity="0.5"
+            />
+          </svg>
+          <h3 class="service-name">Chair & Armchair Upholstery</h3>
+          <p class="service-desc">
+            Dining chairs, accent chairs, wingbacks, recliners — we restore
+            comfort and beauty to every seating piece in your home.
+          </p>
+          <span class="service-tag">Custom Fabric Selection</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.2s">
+          <svg
+            class="service-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="6"
+              y="8"
+              width="40"
+              height="28"
+              rx="4"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <rect
+              x="14"
+              y="36"
+              width="24"
+              height="8"
+              rx="3"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <line
+              x1="6"
+              y1="22"
+              x2="46"
+              y2="22"
+              stroke="currentColor"
+              stroke-width="1.5"
+              opacity="0.5"
+            />
+            <line
+              x1="26"
+              y1="8"
+              x2="26"
+              y2="36"
+              stroke="currentColor"
+              stroke-width="1.5"
+              opacity="0.5"
+            />
+          </svg>
+          <h3 class="service-name">Headboard & Bed Frame Work</h3>
+          <p class="service-desc">
+            Upholster or re-upholster headboards and bed frames with premium
+            padded finishes, creating a luxurious bedroom focal point.
+          </p>
+          <span class="service-tag">Tufted & Flat Options</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.1s">
+          <svg
+            class="service-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 40 L8 22 Q8 16 14 16 L38 16 Q44 16 44 22 L44 40"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M4 40 L48 40"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M16 28 Q26 24 36 28"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              opacity="0.5"
+            />
+          </svg>
+          <h3 class="service-name">Foam & Cushion Replacement</h3>
+          <p class="service-desc">
+            Sagging or flattened cushions? We replace worn foam with
+            high-density, long-lasting alternatives for renewed sit comfort.
+          </p>
+          <span class="service-tag">High-Density & Memory Foam</span>
+        </div>
+
+        <div class="service-card reveal" style="transition-delay: 0.2s">
+          <svg
+            class="service-icon"
+            viewBox="0 0 52 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="26"
+              cy="24"
+              r="16"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M20 24 l4 4 l8-8"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10 40 Q26 48 42 40"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              opacity="0.5"
+            />
+          </svg>
+          <h3 class="service-name">Structural Frame Repair</h3>
+          <p class="service-desc">
+            Broken frames, loose joints, wobbly legs — we fix the bones of your
+            furniture before any reupholstering begins, ensuring lasting
+            results.
+          </p>
+          <span class="service-tag">Joinery & Woodwork</span>
+        </div>
       </div>
- 
-      <div class="contact-info-row">
-        <div class="contact-info-item">
-          <div class="label">Call Us</div>
-          <div class="value">+447393921037</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-visual reveal">
+        <div class="about-img-frame">
+          <img
+            src="assets/images/sofa2.jpg"
+            alt=""
+            style="width: 100%; object-fit: fill"
+          />
         </div>
-        <div class="contact-info-item">
-          <div class="label">Email</div>
-          <div class="value"><a href="mailto:aragonmarknicol@gmail.com" class="__cf_email__" data-cfemail="19717c757576597176747c767f7a76747f766b6d376971">aragonmarknicol@gmail.com</a></div>
-        </div>
-        <div class="contact-info-item">
-          <div class="label">Hours</div>
-          <div class="value">Mon – Sat · 8am – 6pm</div>
-        </div>
-        <div class="contact-info-item">
-          <div class="label">Location</div>
-          <div class="value">Glendower Crescent, Orpington</div>
+        <div class="about-accent-box">
+          <div class="big-num">20+</div>
+          <div class="small-text">Years of Trusted Service</div>
         </div>
       </div>
-    </div>
-  </section>
- 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-brand">Home of Comfort by Mark Ltd.</div>
-    <p>© 2026 Mark Ltd. All rights reserved. General Upholstery & Furniture Repair.</p>
-    <ul class="footer-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </footer>
+
+      <div class="about-content reveal">
+        <p class="section-eyebrow">Why Choose Us</p>
+        <h2 class="section-title">
+          Mark's Legacy of
+          <em style="font-style: italic; color: var(--caramel)">Comfort</em>
+        </h2>
+        <p class="section-subtitle">
+          Home of Comfort by Mark Ltd. was founded on a simple belief: every
+          piece of furniture has a story worth preserving. For over two decades,
+          we've been the trusted choice for homeowners, interior designers, and
+          businesses across the region.
+        </p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="feature-dot"></div>
+            <div class="feature-text">
+              <strong>Master Craftsmen Only</strong>
+              <p>
+                Every project is handled by experienced upholsterers trained in
+                both traditional and modern techniques.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-dot"></div>
+            <div class="feature-text">
+              <strong>Premium Materials Guaranteed</strong>
+              <p>
+                We source only quality fabrics, leathers, and foams — offering
+                50+ options to match any style and budget.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-dot"></div>
+            <div class="feature-text">
+              <strong>Transparent Pricing & Timelines</strong>
+              <p>
+                No hidden costs, no surprises. We provide clear estimates and
+                realistic completion schedules upfront.
+              </p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <div class="feature-dot"></div>
+            <div class="feature-text">
+              <strong>Pickup & Delivery Available</strong>
+              <p>
+                We offer convenient collection and return service so restoring
+                your furniture is hassle-free.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+      <div
+        class="reveal"
+        style="text-align: center; max-width: 620px; margin: 0 auto"
+      >
+        <p class="section-eyebrow">How It Works</p>
+        <h2 class="section-title">
+          From Worn to<br /><em
+            style="font-style: italic; color: var(--caramel)"
+            >Wonderful</em
+          >
+        </h2>
+        <p class="section-subtitle">
+          Our streamlined process makes restoring your furniture simple,
+          transparent, and stress-free from start to finish.
+        </p>
+      </div>
+
+      <div class="process-steps">
+        <div class="process-step reveal">
+          <div class="step-num">1</div>
+          <h3 class="step-title">Free Consultation</h3>
+          <p class="step-desc">
+            Share photos or bring your piece in. We assess the condition and
+            discuss your vision, style, and budget.
+          </p>
+        </div>
+        <div class="process-step reveal" style="transition-delay: 0.1s">
+          <div class="step-num">2</div>
+          <h3 class="step-title">Fabric Selection</h3>
+          <p class="step-desc">
+            Choose from our curated collection of fabrics, leathers, and
+            materials with guidance from our experts.
+          </p>
+        </div>
+        <div class="process-step reveal" style="transition-delay: 0.2s">
+          <div class="step-num">3</div>
+          <h3 class="step-title">Expert Restoration</h3>
+          <p class="step-desc">
+            Our craftsmen get to work — repairing frames, replacing foam, and
+            reupholstering with precision stitching.
+          </p>
+        </div>
+        <div class="process-step reveal" style="transition-delay: 0.3s">
+          <div class="step-num">4</div>
+          <h3 class="step-title">Delivery & Enjoy</h3>
+          <p class="step-desc">
+            Your revived furniture is returned to you on time, complete with a
+            quality guarantee and care guide.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+      <div class="testimonials-header reveal">
+        <p class="section-eyebrow">Client Stories</p>
+        <h2 class="section-title">What Our Customers Say</h2>
+        <p class="section-subtitle">
+          Don't take our word for it — here's what families and businesses say
+          about their experience with us.
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <p class="testimonial-text">
+            I would highly recommend Mark for any furniture design/repairs. I
+            wanted to replace the covers for my dining chairs-he was very
+            professional, punctual & completed the work to a very high standard.
+            He also suggested the best materials & fabrics, ensuring great
+            quality while keeping within budget
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar">N</div>
+            <div>
+              <div class="author-name">Noah Abraham</div>
+              <div class="author-loc">London, United Kingdom</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" style="transition-delay: 0.1s">
+          <p class="testimonial-text">excellent and quality work</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">J</div>
+            <div>
+              <div class="author-name">Jo An Na</div>
+              <div class="author-loc">London, United Kingdom</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / CONTACT -->
+    <section id="contact">
+      <div class="reveal">
+        <p class="section-eyebrow" style="color: var(--sand)">
+          Get Started Today
+        </p>
+        <h2 class="section-title">Ready to Restore<br />Your Furniture?</h2>
+        <p class="section-subtitle">
+          Chat with us directly on Facebook Messenger — describe your piece,
+          send a photo, and we'll get back to you fast with a free quote.
+        </p>
+
+        <div class="messenger-cta-wrap">
+          <a
+            href="https://www.facebook.com/homeofcomfortsupholstery"
+            target="_blank"
+            rel="noopener"
+            class="messenger-btn"
+          >
+            <svg
+              class="messenger-icon"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2C6.477 2 2 6.145 2 11.243c0 2.91 1.395 5.512 3.58 7.237V22l3.27-1.795A10.9 10.9 0 0 0 12 20.486c5.523 0 10-4.145 10-9.243S17.523 2 12 2Zm1.008 12.44-2.548-2.713-4.97 2.713 5.473-5.81 2.61 2.713 4.908-2.713-5.473 5.81Z"
+              />
+            </svg>
+            Message Us on Facebook Messenger
+          </a>
+          <p class="messenger-sub">
+            We typically reply within a few hours · Mon – Sat, 8am – 6pm
+          </p>
+        </div>
+
+        <div class="contact-info-row">
+          <div class="contact-info-item">
+            <div class="label">Call Us</div>
+            <div class="value">+447393921037</div>
+          </div>
+          <div class="contact-info-item">
+            <div class="label">Email</div>
+            <div class="value">
+              <a
+                href="mailto:aragonmarknicol@gmail.com"
+                class="__cf_email__"
+                data-cfemail="19717c757576597176747c767f7a76747f766b6d376971"
+                >aragonmarknicol@gmail.com</a
+              >
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="label">Hours</div>
+            <div class="value">Mon – Sat · 8am – 6pm</div>
+          </div>
+          <div class="contact-info-item">
+            <div class="label">Location</div>
+            <div class="value">Glendower Crescent, Orpington</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-brand">Home of Comfort by Mark Ltd.</div>
+      <p>
+        © 2026 Mark Ltd. All rights reserved. General Upholstery & Furniture
+        Repair.
+      </p>
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </footer>
 
     <script>
-        // Scroll reveal
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.12 });
-        reveals.forEach(el => observer.observe(el));
-
-        // Sticky nav shadow on scroll
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 40) {
-                nav.style.boxShadow = '0 4px 24px rgba(44,26,14,0.08)';
-            } else {
-                nav.style.boxShadow = 'none';
+      // Scroll reveal
+      const reveals = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
             }
-        });
+          });
+        },
+        { threshold: 0.12 },
+      );
+      reveals.forEach((el) => observer.observe(el));
+
+      // Sticky nav shadow on scroll
+      window.addEventListener("scroll", () => {
+        const nav = document.querySelector("nav");
+        if (window.scrollY > 40) {
+          nav.style.boxShadow = "0 4px 24px rgba(44,26,14,0.08)";
+        } else {
+          nav.style.boxShadow = "none";
+        }
+      });
     </script>
-
-</body>
-
+  </body>
 </html>
